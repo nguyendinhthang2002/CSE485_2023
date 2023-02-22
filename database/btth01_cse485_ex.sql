@@ -1,20 +1,42 @@
-a. SELECT * FROM baiviet INNER JOIN theloai ON baiviet.ma_tloai = theloai.ma_tloai WHERE theloai.ten_tloai = 'Nhạc trữ tình';
+--a
+SELECT * FROM baiviet INNER JOIN theloai ON baiviet.ma_tloai = theloai.ma_tloai WHERE theloai.ten_tloai = 'Nhạc trữ tình';
 
-b. SELECT * FROM baiviet INNER JOIN tacgia ON baiviet.ma_tgia = tacgia.ma_tgia WHERE tacgia.ten_tgia = 'Nhacvietplus';
+--b
+SELECT * FROM baiviet INNER JOIN tacgia ON baiviet.ma_tgia = tacgia.ma_tgia WHERE tacgia.ten_tgia = 'Nhacvietplus';
 
-c. SELECT * FROM theloai WHERE theloai.ma_tloai NOT IN (SELECT baiviet.ma_tloai FROM baiviet);
+--c
+ SELECT * FROM theloai WHERE theloai.ma_tloai NOT IN (SELECT baiviet.ma_tloai FROM baiviet);
 
-d. SELECT baiviet.ma_bviet, baiviet.tieude, baiviet.ten_bhat, tacgia.ten_tgia, theloai.ten_tloai, baiviet.ngayviet FROM baiviet INNER JOIN tacgia ON baiviet.ma_tgia = tacgia.ma_tgia INNER JOIN theloai ON baiviet.ma_tloai = theloai.ma_tloai;
+--d
+SELECT baiviet.ma_bviet, baiviet.tieude, baiviet.ten_bhat, tacgia.ten_tgia, theloai.ten_tloai, baiviet.ngayviet FROM baiviet INNER JOIN tacgia ON baiviet.ma_tgia = tacgia.ma_tgia INNER JOIN theloai ON baiviet.ma_tloai = theloai.ma_tloai;
 
-g. SELECT * FROM baiviet WHERE baiviet.ten_bhat LIKE '%yêu%' OR baiviet.ten_bhat LIKE '%Thương%' OR baiviet.ten_bhat LIKE '%anh%' OR baiviet.ten_bhat LIKE '%em%';
+--e
+SELECT theloai.ten_tloai, COUNT(*) AS so_bviet
+FROM baiviet
+JOIN theloai ON baiviet.ma_tloai = theloai.ma_tloai
+GROUP BY baiviet.ma_tloai
+ORDER BY so_bviet DESC
+LIMIT 1;
 
-i. CREATE VIEW vw_music AS
+--f
+SELECT tacgia.ten_tgia, COUNT(*) AS so_bviet
+FROM baiviet
+JOIN tacgia ON tacgia.ma_tgia = baiviet.ma_tgia
+GROUP BY baiviet.ma_tgia
+ORDER BY so_bviet DESC
+LIMIT 2;
+
+--g
+SELECT * FROM baiviet WHERE baiviet.ten_bhat LIKE '%yêu%' OR baiviet.ten_bhat LIKE '%Thương%' OR baiviet.ten_bhat LIKE '%anh%' OR baiviet.ten_bhat LIKE '%em%';
+
+--i
+CREATE VIEW vw_music AS
 SELECT baiviet.*, theloai.ten_tloai, tacgia.ten_tgia
 FROM baiviet
 INNER JOIN theloai ON baiviet.ma_tloai = theloai.ma_tloai
 INNER JOIN tacgia ON baiviet.ma_tgia = tacgia.ma_tgia
 
-l. 
+--l 
 -- phpMyAdmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
