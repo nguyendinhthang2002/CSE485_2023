@@ -35,10 +35,10 @@
                             <a class="nav-link" href="../index.php">Trang ngoài</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="category.php">Thể loại</a>
+                            <a class="nav-link active fw-bold" href="category.php">Thể loại</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active fw-bold" href="author.php">Tác giả</a>
+                            <a class="nav-link" href="author.php">Tác giả</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="article.php">Bài viết</a>
@@ -53,51 +53,51 @@
         <!-- <h3 class="text-center text-uppercase mb-3 text-primary">CẢM NHẬN VỀ BÀI HÁT</h3> -->
         <div class="row">
             <div class="col-sm">
-                <a href="add_author.php" class="btn btn-success">Thêm mới</a>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Tên tác giả</th>
-                            <th>Sửa</th>
-                            <th>Xóa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $local = 'localhost';
-                        $user = 'root';
-                        $pass = '';
-                        $db = 'btth01_cse485';
-                        $port = '3306';
-                        try{
-                            $conn = mysqli_connect($local,$user,$pass,$db,$port);
-                        }catch(exception $e){
-                            echo $e->getMessage();
-                        }
-                            $sql = "SELECT * FROM tacgia";
-                            $result = mysqli_query($conn, $sql);
-                            if(mysqli_num_rows($result) > 0){
-                                while($row = mysqli_fetch_assoc($result)){
-                        ?>
-                        <tr>
-                            <th scope="row"><?php echo $row["ma_tgia"]?></th>
-                            <td><?php echo $row["ten_tgia"] ?></td>
-                            <td>
-                                <a href="edit_author.php?id=<?php echo $row['ma_tgia']?>"><i class="fa-solid fa-pen-to-square"></i></a>
-                            </td>
-                            <td>
-                                <a href="delete_author.php?id=<?php echo $row['ma_tgia']?>"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <?php
-                                }
-                            }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+                <h3 class="text-center text-uppercase fw-bold">Xóa tác giả</h3>
 
+
+                <?php
+                //connect
+                $conn = mysqli_connect('localhost', 'root', '', 'btth01_cse485');
+                ?>
+                <?php
+                if (isset($_GET['id'])) {
+                    $id = $_GET['id'];
+                }
+                $sql = "SELECT * FROM tacgia WHERE ma_tgia = $id";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+                ?>
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $name_category = $_POST['txtAutName'];
+                
+                    if ($name_category == '') {
+                        echo 'Vui lòng nhập tên thể loại';
+                    }
+                
+                    if ($name_category != '') {
+                        $sql = "DELETE FROM tacgia WHERE ma_tgia = $id";
+                        $result = mysqli_query($conn, $sql);
+                        header('location:author.php');
+                    }
+                }
+                ?>
+                <form action="" method="post">
+                    <div class="input-group mt-3 mb-3">
+                        <span class="input-group-text" id="lblCatName">Tên tác giả</span>
+                        <input type="text" class="form-control" name="txtAutName" value="<?php echo $row['ten_tgia']; ?>">
+                    </div>
+
+                    <div class="form-group  float-end ">
+                        <input type="submit" value="Xóa" class="btn btn-success">
+                        <a href="author.php" class="btn btn-warning ">Quay lại</a>
+                    </div>
+                </form>
+
+
+
+            </div>
         </div>
     </main>
     <footer class="bg-white d-flex justify-content-center align-items-center border-top border-secondary  border-2"
